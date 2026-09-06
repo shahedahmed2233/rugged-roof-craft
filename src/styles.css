@@ -56,6 +56,7 @@ h2 { font-family: var(--font-display); font-size: clamp(2.5rem, 6vw, 6.2rem); li
 .nav-link:hover { opacity: 1; }
 .icon-button { display: grid; width: 44px; height: 44px; place-items: center; border: 1px solid color-mix(in oklab, var(--cream) 30%, transparent); background: transparent; color: var(--cream); }
 .mobile-nav { position: absolute; inset: 80px 0 auto; padding: 1rem; background: var(--forest); border-top: 1px solid color-mix(in oklab, var(--cream) 15%, transparent); }
+@media(min-width:1024px){ .icon-button { display: none; } }
 .mobile-nav a { display: block; padding: 1rem; color: var(--cream); text-decoration: none; text-transform: uppercase; font-size: .75rem; font-weight: 700; border-bottom: 1px solid color-mix(in oklab, var(--cream) 10%, transparent); }
 
 .hero { position: relative; min-height: 100svh; overflow: hidden; background: var(--forest); color: var(--cream); }
@@ -107,6 +108,7 @@ h2 { font-family: var(--font-display); font-size: clamp(2.5rem, 6vw, 6.2rem); li
 .process-grid { display:grid; grid-template-columns:1.05fr .95fr; gap:7vw; }
 .process-sticky { position:sticky; top:1.5rem; height:calc(100vh - 3rem); display:flex; align-items:center; }
 .process-image-stack { position:relative; width:100%; aspect-ratio:4/4.7; overflow:hidden; background:var(--forest); }
+@media(min-width:901px){ .process-image-stack { width:min(100%, calc((100vh - 3rem) * 4 / 4.7)); margin-inline:auto; } }
 .process-image-stack img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transform:scale(1.03); transition:opacity .55s,transform .8s; }
 .process-image-stack img.active{opacity:1;transform:scale(1)}
 .progress-count { position:absolute; bottom:0; right:0; padding:1.2rem; background:var(--forest); color:var(--cream); font-family:var(--font-display); font-size:2rem; }.progress-count span{font-size:.7rem;color:var(--primary)}
