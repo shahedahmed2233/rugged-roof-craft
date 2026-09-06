@@ -110,7 +110,7 @@ function Process() {
   const [active, setActive] = useState(0);
   const refs = useRef<(HTMLDivElement | null)[]>([]);
   useEffect(() => {
-    const obs = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) setActive(Number((e.target as HTMLElement).dataset.step)); }), { rootMargin: "-35% 0px -45%" });
+    const obs = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) setActive(Number((e.target as HTMLElement).dataset["step"])); }), { rootMargin: "-35% 0px -45%" });
     refs.current.forEach(el => el && obs.observe(el)); return () => obs.disconnect();
   }, []);
   return <section className="process-section"><div className="shell"><div className="process-intro"><Label>Inside the work</Label><h2>THE METHOD<br />BEHIND THE FINISH.</h2></div>
