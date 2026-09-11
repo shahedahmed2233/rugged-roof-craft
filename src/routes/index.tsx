@@ -110,8 +110,37 @@ function Process() {
   const [active, setActive] = useState(0);
   const refs = useRef<(HTMLDivElement | null)[]>([]);
   useEffect(() => {
-    const obs = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) setActive(Number((e.target as HTMLElement).dataset["step"])); }), { rootMargin: "-35% 0px -45%" });
-    refs.current.forEach(el => el && obs.observe(el)); return () => obs.disconnect();
+    let frame = 0;
+    const updateActiveStep = () => {
+      frame = 0;
+      const focusLine = window.innerHeight * (window.innerWidth <= 900 ? 0.72 : 0.5);
+      let closest = 0;
+      let closestDistance = Number.POSITIVE_INFINITY;
+
+      refs.current.forEach((element, index) => {
+        if (!element) return;
+        const bounds = element.getBoundingClientRect();
+        const distance = Math.abs(bounds.top + bounds.height / 2 - focusLine);
+        if (distance < closestDistance) {
+          closest = index;
+          closestDistance = distance;
+        }
+      });
+
+      setActive(current => current === closest ? current : closest);
+    };
+    const requestUpdate = () => {
+      if (!frame) frame = window.requestAnimationFrame(updateActiveStep);
+    };
+
+    updateActiveStep();
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
+    return () => {
+      window.removeEventListener("scroll", requestUpdate);
+      window.removeEventListener("resize", requestUpdate);
+      if (frame) window.cancelAnimationFrame(frame);
+    };
   }, []);
   return <section className="process-section"><div className="shell"><div className="process-intro"><Label>Inside the work</Label><h2>THE METHOD<br />BEHIND THE FINISH.</h2></div>
     <div className="process-grid"><div className="process-sticky"><div className="process-image-stack">{process.map(([title,, img], i) => <img src={img} loading="lazy" alt={`${title} stage of roofing`} key={title} className={active === i ? "active" : ""} />)}<div className="progress-count">0{active + 1}<span>/ 04</span></div></div></div>
@@ -152,7 +181,7 @@ function About() {
   return <section id="about" className="section-pad bg-sand"><div className="shell about-grid"><div className="about-image"><img src={craftImage} loading="lazy" alt="Experienced DS Roofing professional at work" /><div className="experience"><strong>14+</strong><span>Years<br/>experience</span></div></div><div className="about-copy"><Label>The people behind the work</Label><h2>BUILT ON PRIDE.<br />BACKED BY EXPERIENCE.</h2><p>At DS Roofing we don't just build roofs, we build trust. With over 14 years of experience we provide quality roofing solutions with honest service and workmanship you can rely on. Whatever the job, we take pride in delivering a roof that's built to last.</p><div className="values"><span>Quality workmanship</span><span>Honest service</span><span>Built to last</span></div><p className="service-area">Based in <strong>Littlehampton, United Kingdom</strong></p></div></div></section>;
 }
 
-function Testimonial() { return <section id="reviews" className="testimonial-section"><div className="shell testimonial"><Label light>Trusted by our clients</Label><span className="quote-mark">“</span><blockquote>Excellent service from start to finish. The roof repair was complete to a high standard, everything was left clean and tidy, and the price was fair. Professional.</blockquote><p>Dominique Jenner <span>Client review</span></p></div></section>; }
+function Testimonial() { return <section id="reviews" className="testimonial-section"><div className="shell testimonial"><div className="testimonial-heading"><Label>Trusted by our clients</Label><span aria-hidden="true">01 / 01</span></div><figure className="testimonial-frame"><span className="quote-mark" aria-hidden="true">“</span><blockquote>Excellent service from start to finish. The roof repair was complete to a high standard, everything was left clean and tidy, and the price was fair. Professional.</blockquote><figcaption><span className="testimonial-rule" aria-hidden="true"/><div><strong>Dominique Jenner</strong><span>Client review</span></div></figcaption></figure></div></section>; }
 
 function FinalCta() { return <section id="contact" className="final-cta"><img src={finishedImage} loading="lazy" alt="Completed coastal home roof at sunset"/><div/><div className="shell final-copy"><Label light>Let's get to work</Label><h2>READY TO PROTECT<br/>YOUR HOME?</h2><p>Quality roofing, honest service and workmanship built to last.</p><a className="btn" href="tel:+447904186514">Get a quote <ArrowRight size={18}/></a></div></section>; }
 
