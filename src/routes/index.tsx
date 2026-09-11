@@ -144,7 +144,7 @@ function Process() {
   }, []);
   return <section className="process-section"><div className="shell"><div className="process-intro"><Label>Inside the work</Label><h2>THE METHOD<br />BEHIND THE FINISH.</h2></div>
     <div className="process-grid"><div className="process-sticky"><div className="process-image-stack">{process.map(([title,, img], i) => <img src={img} loading="lazy" alt={`${title} stage of roofing`} key={title} className={active === i ? "active" : ""} />)}<div className="progress-count">0{active + 1}<span>/ 04</span></div></div></div>
-      <div className="process-steps">{process.map(([title, desc], i) => <div className={`process-step ${active === i ? "active" : ""}`} data-step={i} ref={el => { refs.current[i] = el; }} key={title}><span>0{i + 1}</span><div><h3>{title}</h3><p>{desc}</p></div></div>)}</div>
+      <div className="process-steps">{process.map(([title, desc, img], i) => <div className={`process-step ${active === i ? "active" : ""}`} data-step={i} ref={el => { refs.current[i] = el; }} key={title}><div className="process-mobile-image"><img src={img} loading="lazy" alt={`${title} stage of roofing`} /><span>0{i + 1}<small>/04</small></span></div><span>0{i + 1}</span><div><h3>{title}</h3><p>{desc}</p></div></div>)}</div>
     </div>
   </div></section>;
 }
